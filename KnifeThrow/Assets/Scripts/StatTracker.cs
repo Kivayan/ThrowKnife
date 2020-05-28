@@ -12,11 +12,12 @@ public class StatTracker : MonoBehaviour
     public delegate void CustomEvent();
     public static event CustomEvent onLevelPass;
     public static event CustomEvent onLevelFail;
+    public static event CustomEvent onLevelStart;
 
 
     void Start()
     {
-        LoadTarget();
+        
     }
 
     // Update is called once per frame
@@ -35,28 +36,22 @@ public class StatTracker : MonoBehaviour
         }
     }
 
-    public void LevelEnd()
-    {
 
-    }
-
-
-    public void StartLevel()
-    {
-
-    }
 
     private void OnEnable()
     {
-
+        // I know it's dirty but I have to sort out order. Target knives arent loaded in proper order
+        LoadTarget();
+        onLevelStart += LoadTarget;
         KnifeSpawner.onKnifeThrow += SubstractKnife;
-        onLevelPass += LevelEnd;
+        onLevelStart();
+
     }
     private void OnDisable()
     {
 
         KnifeSpawner.onKnifeThrow -= SubstractKnife;
-        onLevelPass -= LevelEnd;
+        onLevelStart += LoadTarget;
     }
 
     public static void ThrowFailed()
@@ -71,4 +66,6 @@ public class StatTracker : MonoBehaviour
         knifesTotal = curTarget.knifes;
         knifesRemaining = curTarget.knifes;
     }
+
+
 }

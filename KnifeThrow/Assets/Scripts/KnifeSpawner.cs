@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class KnifeSpawner : MonoBehaviour
 {
-    public GameObject KnifeModel;
-    public Transform spawnpoint;
-    public KnifeControl curKnife;
-    public float spawnDelay = 0.1f;
-    public bool allowSpawn = true;
+    [SerializeField] GameObject KnifeModel;
+    [SerializeField] Transform spawnpoint;
+    [SerializeField] KnifeControl curKnife;
+    [SerializeField] float spawnDelay = 0.1f;
+    [SerializeField] bool allowSpawn = true;
+
     public delegate void CustomEvent();
     public static event CustomEvent onKnifeThrow;
 
@@ -35,13 +36,13 @@ public class KnifeSpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator delay()
+    IEnumerator delay()
     {
         yield return new WaitForSeconds(spawnDelay);
         spawnNewKnife();
     }
-
-    private void ThrowMonitor()
+    // TODO move to separate class, space will do different things depending on context (next on win/loose screen)
+    void ThrowMonitor()
     {
         if(Input.GetKeyDown("space") && StatTracker.gameOngoing)
         {
@@ -49,17 +50,17 @@ public class KnifeSpawner : MonoBehaviour
             StartCoroutine(delay());
         }
     }
-    public void DisableSpawn()
+    void DisableSpawn()
     {
         allowSpawn = false;
     }
 
-    private void OnEnable() {
+    void OnEnable() {
         StatTracker.onLevelPass += DisableSpawn;
         StatTracker.onLevelFail += DisableSpawn;
     }
 
-    private void OnDiable() {
+    void OnDiable() {
         StatTracker.onLevelPass -= DisableSpawn;
         StatTracker.onLevelFail -= DisableSpawn;
         
