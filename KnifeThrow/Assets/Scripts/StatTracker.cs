@@ -43,6 +43,9 @@ public class StatTracker : MonoBehaviour
         // I know it's dirty but I have to sort out order. Target knives arent loaded in proper order
         LoadTarget();
         onLevelStart += LoadTarget;
+        onLevelStart += SetGameOngoingActive;
+        onLevelFail += SetGameOngoingInactive;
+        onLevelPass += SetGameOngoingInactive;
         KnifeSpawner.onKnifeThrow += SubstractKnife;
         onLevelStart();
 
@@ -51,7 +54,10 @@ public class StatTracker : MonoBehaviour
     {
 
         KnifeSpawner.onKnifeThrow -= SubstractKnife;
-        onLevelStart += LoadTarget;
+        onLevelStart -= LoadTarget;
+        onLevelStart -= SetGameOngoingActive;
+        onLevelFail -= SetGameOngoingInactive;
+        onLevelPass -= SetGameOngoingInactive;
     }
 
     public static void ThrowFailed()
@@ -65,6 +71,16 @@ public class StatTracker : MonoBehaviour
         curTarget = GetComponentInChildren<Target>();
         knifesTotal = curTarget.knifes;
         knifesRemaining = curTarget.knifes;
+    }
+
+    void SetGameOngoingActive()
+    {
+        gameOngoing = true;
+    }
+
+    void SetGameOngoingInactive()
+    {
+        gameOngoing = false;
     }
 
 

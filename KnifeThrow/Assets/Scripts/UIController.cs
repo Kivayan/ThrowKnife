@@ -33,6 +33,8 @@ public class UIController : MonoBehaviour
         //KnifeSpawner.onKnifeThrow += SetKnifesText;
         StatTracker.onLevelPass += showWin;
         StatTracker.onLevelFail += showLoose;
+        InputControler.onSpaceClicked += hideLoose;
+        InputControler.onSpaceClicked += hideWin;
 
     }
 
@@ -43,6 +45,8 @@ public class UIController : MonoBehaviour
         //KnifeSpawner.onKnifeThrow -= SetKnifesText;
         StatTracker.onLevelPass -= showWin;
         StatTracker.onLevelFail -= showLoose;
+        InputControler.onSpaceClicked -= hideLoose;
+        InputControler.onSpaceClicked -= hideWin;
     }
 
     void SetKnifesText()
@@ -59,6 +63,23 @@ public class UIController : MonoBehaviour
     void showWin()
     {
         winScreen.SetActive(true);
+    }
+
+
+    void hideLoose()
+    {
+        if(!StatTracker.gameOngoing)
+        {
+            looseScreen.SetActive(false);
+        }
+    }
+
+    void hideWin()
+    {
+        if(!StatTracker.gameOngoing)
+        {
+            winScreen.SetActive(false);
+        }
     }
 
 
