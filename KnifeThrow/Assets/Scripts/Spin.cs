@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class Spin : MonoBehaviour
 {
-    public float rotationSpeed = 10f;
-    // Start is called before the first frame update
+    [SerializeField] float flatRotationSpeed = 50f;
+
+    [SerializeField] float sinBasSpeed = 50f;
+    [SerializeField] float sinFrequency = 4f;
+    [SerializeField] float sinMagintude = 40f;
+    [SerializeField] float sinSpeed;
+
+    float sinTime = 0f;
+    
+
+
+
     void Start()
     {
         
@@ -14,6 +24,18 @@ public class Spin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-         transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
+        SpinSinusoid();
+    }
+
+    void SpinBasic()
+    {
+        transform.Rotate(Vector3.forward * flatRotationSpeed * Time.deltaTime);
+    }
+
+    void SpinSinusoid()
+    {
+        sinTime += Time.deltaTime;
+        sinSpeed = sinBasSpeed + Mathf.Sin(sinFrequency * sinTime) * sinMagintude;
+        transform.Rotate(Vector3.forward * Time.deltaTime * sinSpeed);
     }
 }
