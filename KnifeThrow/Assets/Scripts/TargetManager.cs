@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class TargetManager : MonoBehaviour
 {
-    
+
     [SerializeField] GameObject curTarget;
-    [SerializeField]  Transform spawnPoint;
+    [SerializeField] Transform spawnPoint;
     [SerializeField] List<GameObject> targetList;
- 
+
 
     public delegate void CustomEvent();
     public static event CustomEvent onTargetLoad;
@@ -20,7 +20,7 @@ public class TargetManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown("w"))
+        if (Input.GetKeyDown("w"))
         {
             LoadNewTarget();
         }

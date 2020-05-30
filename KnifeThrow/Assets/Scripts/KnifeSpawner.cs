@@ -23,7 +23,6 @@ public class KnifeSpawner : MonoBehaviour
     void Update()
     {
 
-        ThrowMonitor();
     }
 
     void spawnNewKnife()
@@ -36,20 +35,21 @@ public class KnifeSpawner : MonoBehaviour
         }
     }
 
-    IEnumerator delay()
+    IEnumerator delayKnifeSpawn()
     {
         yield return new WaitForSeconds(spawnDelay);
         spawnNewKnife();
     }
-    // TODO move to separate class, space will do different things depending on context (next on win/loose screen)
-    void ThrowMonitor()
+
+    void Throw()
     {
-        if(Input.GetKeyDown("space") && StatTracker.gameOngoing)
+        if(StatTracker.gameOngoing)
         {
             onKnifeThrow();
-            StartCoroutine(delay());
+            StartCoroutine(delayKnifeSpawn());
         }
     }
+
     void DisableSpawn()
     {
         allowSpawn = false;
@@ -58,11 +58,15 @@ public class KnifeSpawner : MonoBehaviour
     void OnEnable() {
         StatTracker.onLevelPass += DisableSpawn;
         StatTracker.onLevelFail += DisableSpawn;
+        InputControler.onSpaceClicked += Throw;
     }
 
-    void OnDiable() {
+    void OnDisable() {
         StatTracker.onLevelPass -= DisableSpawn;
         StatTracker.onLevelFail -= DisableSpawn;
+        InputControler.onSpaceClicked -= Throw;
         
     }
+
+    
 }
