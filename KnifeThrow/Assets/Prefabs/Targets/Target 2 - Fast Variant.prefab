@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6178822572297764116, guid: 83946120f84c05346a76e2d12209cb10,
+        type: 3}
+      propertyPath: knifes
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764120, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -70,7 +75,7 @@ PrefabInstance:
     - target: {fileID: 6178822572297764126, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
       propertyPath: m_Name
-      value: Target 2 - Fast
+      value: Target 2 - Fast Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83946120f84c05346a76e2d12209cb10, type: 3}

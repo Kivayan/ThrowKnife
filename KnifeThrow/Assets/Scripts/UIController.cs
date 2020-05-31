@@ -11,6 +11,9 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject looseScreen;
 
+    public delegate void CustomEvent();
+    public static event CustomEvent onMessageDismiss;
+
 
     void Start()
     {
@@ -29,7 +32,6 @@ public class UIController : MonoBehaviour
     void OnEnable()
     {
 
-        StatTracker.onLevelStart += SetKnifesText;
         //KnifeSpawner.onKnifeThrow += SetKnifesText;
         StatTracker.onLevelPass += showWin;
         StatTracker.onLevelFail += showLoose;
@@ -41,7 +43,6 @@ public class UIController : MonoBehaviour
     void OnDisable()
     {
 
-        StatTracker.onLevelStart -= SetKnifesText;
         //KnifeSpawner.onKnifeThrow -= SetKnifesText;
         StatTracker.onLevelPass -= showWin;
         StatTracker.onLevelFail -= showLoose;
@@ -63,22 +64,27 @@ public class UIController : MonoBehaviour
     void showWin()
     {
         winScreen.SetActive(true);
+        Debug.Log("Showing Text");
     }
 
 
     void hideLoose()
     {
-        if(!StatTracker.gameOngoing)
+        if(!StatTracker.gameOngoing && !StatTracker.levelWon)
         {
+            Debug.Log("HIDING LOOSE");
             looseScreen.SetActive(false);
+            onMessageDismiss();
         }
-    }
+    } 
 
     void hideWin()
     {
-        if(!StatTracker.gameOngoing)
+        if(!StatTracker.gameOngoing && StatTracker.levelWon)
         {
+            Debug.Log("HIDING WIN");
             winScreen.SetActive(false);
+            onMessageDismiss();
         }
     }
 

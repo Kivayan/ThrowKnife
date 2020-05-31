@@ -8,7 +8,8 @@ public class KnifeSpawner : MonoBehaviour
     [SerializeField] Transform spawnpoint;
     [SerializeField] KnifeControl curKnife;
     [SerializeField] float spawnDelay = 0.1f;
-    [SerializeField] bool allowSpawn = true;
+    [SerializeField] static bool allowSpawn = true;
+    [SerializeField] public static bool allowThrow = true;
 
     public delegate void CustomEvent();
     public static event CustomEvent onKnifeThrow;
@@ -31,6 +32,7 @@ public class KnifeSpawner : MonoBehaviour
         {
             GameObject newKnife = Instantiate(KnifeModel,spawnpoint.position, spawnpoint.rotation);
             curKnife = newKnife.GetComponent<KnifeControl>();
+            curKnife.transform.SetParent(transform);
             print("new knifeSpawn");
         }
     }
@@ -43,29 +45,51 @@ public class KnifeSpawner : MonoBehaviour
 
     void Throw()
     {
-        if(StatTracker.gameOngoing)
+        if(StatTracker.gameOngoing && allowThrow)
         {
             onKnifeThrow();
             StartCoroutine(delayKnifeSpawn());
         }
     }
 
-    void DisableSpawn()
+    public static void DisableSpawn()
     {
         allowSpawn = false;
     }
 
+    void EnableSpawn()
+    {
+        allowSpawn = true;
+    }
+
+    void DisableTrow()
+    {
+        allowThrow = false;
+    }
+
+
     void OnEnable() {
         StatTracker.onLevelPass += DisableSpawn;
+        StatTracker.onLevelPass += DisableTrow;
         StatTracker.onLevelFail += DisableSpawn;
         InputControler.onSpaceClicked += Throw;
+        UIController.onMessageDismiss += newLevelPrep;
+
     }
 
     void OnDisable() {
         StatTracker.onLevelPass -= DisableSpawn;
         StatTracker.onLevelFail -= DisableSpawn;
+        StatTracker.onLevelPass -= DisableTrow;
         InputControler.onSpaceClicked -= Throw;
+        UIController.onMessageDismiss -= newLevelPrep;
         
+    }
+
+    void newLevelPrep()
+    {
+        EnableSpawn();
+        spawnNewKnife();
     }
 
     
