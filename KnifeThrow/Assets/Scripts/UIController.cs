@@ -11,6 +11,7 @@ public class UIController : MonoBehaviour
     [SerializeField] Text knifesText;
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject looseScreen;
+    GameObject activeScreen;
 
     public static event Action onMessageDismiss;
 
@@ -31,23 +32,16 @@ public class UIController : MonoBehaviour
 
     void OnEnable()
     {
-
-        //KnifeSpawner.onKnifeThrow += SetKnifesText;
-        StatTracker.onLevelPass += showWin;
-        StatTracker.onLevelFail += showLoose;
-        InputControler.onSpaceClicked += hideLoose;
-        InputControler.onSpaceClicked += hideWin;
-
+        StatTracker.onLevelEnd +=ShowEndScreen;
+        InputControler.onSpaceClicked += hideEndScreen;
     }
 
     void OnDisable()
     {
 
-        //KnifeSpawner.onKnifeThrow -= SetKnifesText;
-        StatTracker.onLevelPass -= showWin;
-        StatTracker.onLevelFail -= showLoose;
-        InputControler.onSpaceClicked -= hideLoose;
-        InputControler.onSpaceClicked -= hideWin;
+
+        StatTracker.onLevelEnd -=ShowEndScreen;
+        InputControler.onSpaceClicked -= hideEndScreen;
     }
 
     void SetKnifesText()
@@ -56,38 +50,40 @@ public class UIController : MonoBehaviour
         knifesText.text = KnifeCount;
     }
 
-    void showLoose()
+    void ShowEndScreen(LevelResult result)
     {
-        looseScreen.SetActive(true);
-    }
-
-    void showWin()
-    {
-        winScreen.SetActive(true);
-        Debug.Log("Showing Text");
-    }
-
-
-    void hideLoose()
-    {
-        if(!StatTracker.gameOngoing && !StatTracker.levelWon)
+        if(result.lvlResult == LevelResult.Result.win)
         {
-            Debug.Log("HIDING LOOSE");
-            looseScreen.SetActive(false);
-            onMessageDismiss();
+            winScreen.SetActive(true);
+            activeScreen = winScreen;
         }
-    } 
 
-    void hideWin()
-    {
-        if(!StatTracker.gameOngoing && StatTracker.levelWon)
+        if(result.lvlResult == LevelResult.Result.loose)
         {
-            Debug.Log("HIDING WIN");
-            winScreen.SetActive(false);
-            onMessageDismiss();
+            looseScreen.SetActive(true);
+            activeScreen  = looseScreen;
         }
     }
 
-
+    void hideEndScreen()
+    {
+        if(!StatTracker.gameOngoing)
+        {
+            if (!StatTracker.levelWon)
+            {
+                Debug.Log("HIDING LOOSE");
+                looseScreen.SetActive(false);
+                onMessageDismiss();
+            }
+            if(StatTracker.levelWon)
+            {
+                Debug.Log("HIDING WIN");
+                winScreen.SetActive(false);
+                onMessageDismiss();
+            }
+            
+        } 
+    }
+        
 
 }

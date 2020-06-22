@@ -15,11 +15,13 @@ public class StatTracker : MonoBehaviour
     public static event Action onLevelPass;
     public static event Action onLevelFail;
 
+    public static event Action<LevelResult> onLevelEnd = details => { };
 
     [SerializeField] Transform spawnPoint;
     [SerializeField] List<GameObject> targetList;
-
+    
     void Start()
+    
     {
         curTarget = GetComponentInChildren<Target>();
         LoadGameFromStart();
@@ -42,7 +44,8 @@ public class StatTracker : MonoBehaviour
         if (knifesRemaining == 0 && onLevelPass != null && gameOngoing)
         {
             KnifeSpawner.DisableSpawn();
-            onLevelPass();
+            onLevelEnd.Invoke(new LevelResult{lvlResult = LevelResult.Result.win});
+            //onLevelPass();
             levelWon = true;
         }
     
@@ -53,9 +56,10 @@ public class StatTracker : MonoBehaviour
     private void OnEnable()
     {
         // I know it's dirty but I have to sort out order. Target knives arent loaded in proper order
-
-        onLevelFail += SetGameOngoingInactive;
-        onLevelPass += SetGameOngoingInactive;
+        
+        onLevelEnd += SetGameOngoingInactive;
+        //onLevelFail += SetGameOngoingInactive;
+        //onLevelPass += SetGameOngoingInactive;
         KnifeSpawner.onKnifeThrow += SubstractKnife;
         UIController.onMessageDismiss += ContinueAfterLevel;
     }
@@ -63,16 +67,17 @@ public class StatTracker : MonoBehaviour
     
     private void OnDisable()
     {
-
+        onLevelEnd -= SetGameOngoingInactive;
         KnifeSpawner.onKnifeThrow -= SubstractKnife;
-        onLevelFail -= SetGameOngoingInactive;
-        onLevelPass -= SetGameOngoingInactive;
+        //onLevelFail -= SetGameOngoingInactive;
+        //onLevelPass -= SetGameOngoingInactive;
         UIController.onMessageDismiss -= ContinueAfterLevel;
     }
 
     public static void ThrowFailed()
     {
-        onLevelFail();
+        onLevelEnd.Invoke(new LevelResult{lvlResult = LevelResult.Result.loose});
+        //onLevelFail();
         levelWon = false;
     }
 
@@ -82,13 +87,20 @@ public class StatTracker : MonoBehaviour
         knifesRemaining = curTarget.knifes;
     }
 
+    void SetGameOngoingActive(LevelResult result)
+    {
+        gameOngoing = true;
+        Debug.Log("Game Ongoing");
+    }
+
     void SetGameOngoingActive()
     {
         gameOngoing = true;
         Debug.Log("Game Ongoing");
     }
 
-    void SetGameOngoingInactive() 
+
+    void SetGameOngoingInactive(LevelResult result) 
     {
         gameOngoing = false;
         Debug.Log("Game Ongoing _NOT");
@@ -150,4 +162,12 @@ public class StatTracker : MonoBehaviour
             LoadGameFromStart();
         }
     }
+
+
 }
+
+    public class LevelResult
+    {   
+        public enum Result {win, loose}
+        public Result lvlResult;
+    }
