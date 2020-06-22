@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class KnifeSpawner : MonoBehaviour
 {
@@ -11,8 +12,7 @@ public class KnifeSpawner : MonoBehaviour
     [SerializeField] static bool allowSpawn = true;
     [SerializeField] public static bool allowThrow = true;
 
-    public delegate void CustomEvent();
-    public static event CustomEvent onKnifeThrow;
+    public static event Action onKnifeThrow;
 
 
     void Start()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StatTracker : MonoBehaviour
 {
@@ -11,9 +12,8 @@ public class StatTracker : MonoBehaviour
 
     public Target curTarget;
     public int curLevelNumber = 0;
-    public delegate void CustomEvent();
-    public static event CustomEvent onLevelPass;
-    public static event CustomEvent onLevelFail;
+    public static event Action onLevelPass;
+    public static event Action onLevelFail;
 
 
     [SerializeField] Transform spawnPoint;

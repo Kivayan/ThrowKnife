@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class UIController : MonoBehaviour
 {
@@ -11,8 +12,7 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject looseScreen;
 
-    public delegate void CustomEvent();
-    public static event CustomEvent onMessageDismiss;
+    public static event Action onMessageDismiss;
 
 
     void Start()
