@@ -16,8 +16,10 @@ public class Spin : MonoBehaviour
     [SerializeField] float sinMagintude = 40f;
     [SerializeField] float sinSpeed;
 
+    public enum SpinType {constant, sinus, complex}
+    [SerializeField] SpinType spinType;
+
     float sinTime = 0f;
-    
 
 
 
@@ -25,7 +27,6 @@ public class Spin : MonoBehaviour
     {
         
     }
-
 
     void Update()
     {
@@ -52,6 +53,7 @@ public class Spin : MonoBehaviour
             (!simpleRotation && !sinusoidalRotation ) 
         )
         {
+            //TODO remove exception
             throw new System.Exception ("Select only one of Rotation Modes in " + gameObject.name);
         }
 
@@ -63,6 +65,18 @@ public class Spin : MonoBehaviour
         if(sinusoidalRotation)
         {
             SpinSinusoid();
+        }
+    }
+
+    void SpinSelector()
+    {
+        switch (spinType)
+        {
+            case SpinType.complex: SpinBasic();
+            break;
+
+
+        
         }
     }
     

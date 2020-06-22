@@ -59,6 +59,8 @@ public class StatTracker : MonoBehaviour
         KnifeSpawner.onKnifeThrow += SubstractKnife;
         UIController.onMessageDismiss += ContinueAfterLevel;
     }
+
+    
     private void OnDisable()
     {
 

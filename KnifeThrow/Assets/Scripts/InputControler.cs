@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class InputControler : MonoBehaviour
 {
-    public delegate void CustomEvent();
-    public static event CustomEvent onSpaceClicked;
+
+    public static event Action onSpaceClicked;
 
     void Update()
     {
@@ -17,7 +18,11 @@ public class InputControler : MonoBehaviour
         if(Input.GetKeyDown("space"))
         {
             onSpaceClicked();
-
         }
+    }
+
+    void start()
+    {
+
     }
 }
