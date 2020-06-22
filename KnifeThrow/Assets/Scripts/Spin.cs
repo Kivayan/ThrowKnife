@@ -4,33 +4,27 @@ using UnityEngine;
 
 public class Spin : MonoBehaviour
 {
+    
+    private enum SpinType {constant, sinus}
+    [Header ("Rotation Type Selector")]
+    [SerializeField] SpinType spinType;
+
+
     [Header ("Simple Rotation")]
-    [SerializeField] bool simpleRotation = false;
     [SerializeField] float simpleRotationSpeed = 60f;
 
 
     [Header ("Sinusoidal Rotation")]
-    [SerializeField] bool sinusoidalRotation = false;
     [SerializeField] float sinBasSpeed = 50f;
     [SerializeField] float sinFrequency = 4f;
     [SerializeField] float sinMagintude = 40f;
     [SerializeField] float sinSpeed;
-
-    public enum SpinType {constant, sinus, complex}
-    [SerializeField] SpinType spinType;
-
     float sinTime = 0f;
 
 
-
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
-        RotationModeSelector();
+        SpinSelector();
     }
 
     void SpinBasic()
@@ -45,38 +39,15 @@ public class Spin : MonoBehaviour
         transform.Rotate(Vector3.forward * Time.deltaTime * sinSpeed);
     }
 
-    void RotationModeSelector()
-    {
-        if(
-            (simpleRotation && sinusoidalRotation ) 
-            ||
-            (!simpleRotation && !sinusoidalRotation ) 
-        )
-        {
-            //TODO remove exception
-            throw new System.Exception ("Select only one of Rotation Modes in " + gameObject.name);
-        }
-
-        if(simpleRotation)
-        {
-            SpinBasic();
-        }
-    
-        if(sinusoidalRotation)
-        {
-            SpinSinusoid();
-        }
-    }
-
     void SpinSelector()
     {
         switch (spinType)
         {
-            case SpinType.complex: SpinBasic();
+            case SpinType.constant: SpinBasic();
             break;
 
-
-        
+            case SpinType.sinus: SpinSinusoid();
+            break;
         }
     }
     
