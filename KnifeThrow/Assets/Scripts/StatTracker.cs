@@ -8,18 +8,18 @@ public class StatTracker : MonoBehaviour
     public int knifesTotal;
     public int knifesRemaining;
     public static bool gameOngoing = true;
-    public static bool levelWon; 
+    public static bool levelWon;
 
     public Target curTarget;
-    public int curLevelNumber = 0;
+    public int curLevelNumber = 1;
 
     public static event Action<LevelResult> onLevelEnd = details => { };
 
     [SerializeField] Transform spawnPoint;
     [SerializeField] List<GameObject> targetList;
-    
+
     void Start()
-    
+
     {
         curTarget = GetComponentInChildren<Target>();
         LoadGameFromStart();
@@ -28,7 +28,7 @@ public class StatTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(knifesTotal == knifesRemaining)
+        if (knifesTotal == knifesRemaining)
         {
             KnifeSpawner.allowThrow = true;
         }
@@ -36,28 +36,27 @@ public class StatTracker : MonoBehaviour
 
     public void SubstractKnife()
     {
-        if(gameOngoing)
+        if (gameOngoing)
         {
             knifesRemaining -= 1;
         }
 
-        if (knifesRemaining == 0 &&  gameOngoing)
+        if (knifesRemaining == 0 && gameOngoing)
         {
-            Debug.Log("won");
-            EndLevel(new LevelResult{lvlResult = LevelResult.Result.win});
+            EndLevel(new LevelResult { lvlResult = LevelResult.Result.win });
         }
-    
+
     }
 
     private void OnEnable()
     {
         // I know it's dirty but I have to sort out order. Target knives arent loaded in proper order
-        
+
         KnifeSpawner.onKnifeThrow += SubstractKnife;
         UIController.onMessageDismiss += ContinueAfterLevel;
     }
 
-    
+
     private void OnDisable()
     {
         KnifeSpawner.onKnifeThrow -= SubstractKnife;
@@ -72,20 +71,23 @@ public class StatTracker : MonoBehaviour
         KnifeSpawner.DisableTrow();
         onLevelEnd.Invoke(result);
 
-        if(result.lvlResult == LevelResult.Result.win)
+        if (result.lvlResult == LevelResult.Result.win)
         {
             levelWon = true;
         }
-        else 
+        else
         {
             levelWon = false;
         }
-  
+
     }
 
     public static void ThrowFailed()
     {
-        EndLevel(new LevelResult{lvlResult = LevelResult.Result.loose});
+        if (gameOngoing)
+        {
+            EndLevel(new LevelResult { lvlResult = LevelResult.Result.loose });
+        }
     }
 
     private void GetKnifesCount()
@@ -99,8 +101,8 @@ public class StatTracker : MonoBehaviour
         RemoveTarget();
         SpawnNewTarget(false);
         GetKnifesCount();
-       
-        
+
+
         gameOngoing = true;
         KnifeSpawner.EnableSpawn();
         //KnifeSpawner.allowThrow = true;
@@ -108,18 +110,19 @@ public class StatTracker : MonoBehaviour
 
     void LoadGameFromStart()
     {
-        if(curTarget!= null)
+        if (curTarget != null)
         {
             RemoveTarget();
         }
 
+        curLevelNumber = 1;
         SpawnNewTarget(true);
         GetKnifesCount();
-        KnifeSpawner.EnableSpawn();  
+        KnifeSpawner.EnableSpawn();
         gameOngoing = true;
     }
 
-     void RemoveTarget()
+    void RemoveTarget()
     {
         Destroy(curTarget.gameObject);
         curTarget = null;
@@ -127,7 +130,7 @@ public class StatTracker : MonoBehaviour
 
     void SpawnNewTarget(bool freshStart)
     {
-        if(freshStart)
+        if (freshStart)
         {
             GameObject newTarget = Instantiate(targetList[0], spawnPoint.position, spawnPoint.rotation);
             newTarget.transform.SetParent(GetComponent<Transform>());
@@ -144,7 +147,7 @@ public class StatTracker : MonoBehaviour
 
     void ContinueAfterLevel()
     {
-        if(levelWon)
+        if (levelWon)
         {
             LoadNextLevel();
         }
@@ -156,8 +159,8 @@ public class StatTracker : MonoBehaviour
 
 }
 
-    public class LevelResult
-    {   
-        public enum Result {win, loose}
-        public Result lvlResult;
-    }
+public class LevelResult
+{
+    public enum Result { win, loose }
+    public Result lvlResult;
+}

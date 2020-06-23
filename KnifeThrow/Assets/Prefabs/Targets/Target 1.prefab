@@ -1,31 +1,26 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1761439461771426301
+--- !u!1001 &791912293679602121
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6178822572297764116, guid: 83946120f84c05346a76e2d12209cb10,
-        type: 3}
-      propertyPath: knifes
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764120, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.06
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764120, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.92
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764120, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764120, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
@@ -69,28 +64,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764123, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
-      propertyPath: simpleRotationSpeed
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6178822572297764123, guid: 83946120f84c05346a76e2d12209cb10,
-        type: 3}
-      propertyPath: simpleRotation
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6178822572297764123, guid: 83946120f84c05346a76e2d12209cb10,
-        type: 3}
-      propertyPath: sinusoidalRotation
+      propertyPath: spinType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764123, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
-      propertyPath: spinType
-      value: 1
+      propertyPath: simpleRotationSpeed
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 6178822572297764126, guid: 83946120f84c05346a76e2d12209cb10,
         type: 3}
       propertyPath: m_Name
-      value: Target 2 - Fast Variant
+      value: Target 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83946120f84c05346a76e2d12209cb10, type: 3}

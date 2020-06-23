@@ -134,9 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6e281a59c7527b41a7b87f3c8262f14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simpleRotation: 1
-  simpleRotationSpeed: 50
-  sinusoidalRotation: 0
+  spinType: 1
+  simpleRotationSpeed: 90
   sinBasSpeed: 50
   sinFrequency: 4
   sinMagintude: 40

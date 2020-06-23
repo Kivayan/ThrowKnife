@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] StatTracker statTracker;
     [SerializeField] Text knifesText;
+    [SerializeField] Text levelText;
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject looseScreen;
     GameObject activeScreen;
@@ -28,6 +29,7 @@ public class UIController : MonoBehaviour
     {
         // TODO Trigger only after knifet throw. Order prolems for now
         SetKnifesText();
+        SetLevelText();
     }
 
     void OnEnable()
@@ -48,6 +50,12 @@ public class UIController : MonoBehaviour
     {
         string KnifeCount = "Knifes " + statTracker.knifesRemaining.ToString() + "/" + statTracker.knifesTotal.ToString();
         knifesText.text = KnifeCount;
+    }
+
+    public void SetLevelText()
+    {
+        string level =  "Level " + statTracker.curLevelNumber.ToString();
+        levelText.text = level;
     }
 
     void ShowEndScreen(LevelResult result)
@@ -71,13 +79,11 @@ public class UIController : MonoBehaviour
         {
             if (!StatTracker.levelWon)
             {
-                Debug.Log("HIDING LOOSE");
                 looseScreen.SetActive(false);
                 onMessageDismiss();
             }
             if(StatTracker.levelWon)
             {
-                Debug.Log("HIDING WIN");
                 winScreen.SetActive(false);
                 onMessageDismiss();
             }

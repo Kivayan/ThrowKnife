@@ -32,13 +32,10 @@ public class KnifeControl : MonoBehaviour
     void ThrowKnife()
     {
         rb.AddForce(Vector3.up * Thrust);
-        print("fire");
     }
 
     private void OnCollisionEnter2D(Collision2D collision) 
     {
-        print(collision.gameObject.name);
-
         if (collision.gameObject.tag == "Target")
          {
             atTarget = true;

@@ -32,7 +32,6 @@ public class KnifeSpawner : MonoBehaviour
             GameObject newKnife = Instantiate(KnifeModel,spawnpoint.position, spawnpoint.rotation);
             curKnife = newKnife.GetComponent<KnifeControl>();
             curKnife.transform.SetParent(transform);
-            print("new knifeSpawn");
         }
     }
 
@@ -46,7 +45,6 @@ public class KnifeSpawner : MonoBehaviour
     {
         if(StatTracker.gameOngoing && allowThrow)
         {
-            Debug.Log("Throw");
             onKnifeThrow();
             StartCoroutine(delayKnifeSpawn());
         }
