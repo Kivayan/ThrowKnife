@@ -45,7 +45,6 @@ public class StatTracker : MonoBehaviour
         {
             KnifeSpawner.DisableSpawn();
             onLevelEnd.Invoke(new LevelResult{lvlResult = LevelResult.Result.win});
-            //onLevelPass();
             levelWon = true;
         }
     
@@ -58,8 +57,6 @@ public class StatTracker : MonoBehaviour
         // I know it's dirty but I have to sort out order. Target knives arent loaded in proper order
         
         onLevelEnd += SetGameOngoingInactive;
-        //onLevelFail += SetGameOngoingInactive;
-        //onLevelPass += SetGameOngoingInactive;
         KnifeSpawner.onKnifeThrow += SubstractKnife;
         UIController.onMessageDismiss += ContinueAfterLevel;
     }
@@ -69,15 +66,12 @@ public class StatTracker : MonoBehaviour
     {
         onLevelEnd -= SetGameOngoingInactive;
         KnifeSpawner.onKnifeThrow -= SubstractKnife;
-        //onLevelFail -= SetGameOngoingInactive;
-        //onLevelPass -= SetGameOngoingInactive;
         UIController.onMessageDismiss -= ContinueAfterLevel;
     }
 
     public static void ThrowFailed()
     {
         onLevelEnd.Invoke(new LevelResult{lvlResult = LevelResult.Result.loose});
-        //onLevelFail();
         levelWon = false;
     }
 
