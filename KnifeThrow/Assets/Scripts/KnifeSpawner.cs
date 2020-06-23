@@ -23,7 +23,6 @@ public class KnifeSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     void spawnNewKnife()
@@ -47,6 +46,7 @@ public class KnifeSpawner : MonoBehaviour
     {
         if(StatTracker.gameOngoing && allowThrow)
         {
+            Debug.Log("Throw");
             onKnifeThrow();
             StartCoroutine(delayKnifeSpawn());
         }
@@ -57,30 +57,26 @@ public class KnifeSpawner : MonoBehaviour
         allowSpawn = false;
     }
 
-    void EnableSpawn()
+    public static void EnableSpawn()
     {
         allowSpawn = true;
     }
 
-    void DisableTrow()
+    public static void DisableTrow()
     {
         allowThrow = false;
     }
 
 
     void OnEnable() {
-        StatTracker.onLevelPass += DisableSpawn;
-        StatTracker.onLevelPass += DisableTrow;
-        StatTracker.onLevelFail += DisableSpawn;
+
         InputControler.onSpaceClicked += Throw;
         UIController.onMessageDismiss += newLevelPrep;
 
     }
 
     void OnDisable() {
-        StatTracker.onLevelPass -= DisableSpawn;
-        StatTracker.onLevelFail -= DisableSpawn;
-        StatTracker.onLevelPass -= DisableTrow;
+
         InputControler.onSpaceClicked -= Throw;
         UIController.onMessageDismiss -= newLevelPrep;
         

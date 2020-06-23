@@ -12,8 +12,6 @@ public class StatTracker : MonoBehaviour
 
     public Target curTarget;
     public int curLevelNumber = 0;
-    public static event Action onLevelPass;
-    public static event Action onLevelFail;
 
     public static event Action<LevelResult> onLevelEnd = details => { };
 
@@ -38,25 +36,23 @@ public class StatTracker : MonoBehaviour
 
     public void SubstractKnife()
     {
-    
-        knifesRemaining -= 1;
-
-        if (knifesRemaining == 0 && onLevelPass != null && gameOngoing)
+        if(gameOngoing)
         {
-            KnifeSpawner.DisableSpawn();
-            onLevelEnd.Invoke(new LevelResult{lvlResult = LevelResult.Result.win});
-            levelWon = true;
+            knifesRemaining -= 1;
+        }
+
+        if (knifesRemaining == 0 &&  gameOngoing)
+        {
+            Debug.Log("won");
+            EndLevel(new LevelResult{lvlResult = LevelResult.Result.win});
         }
     
     }
-
-
 
     private void OnEnable()
     {
         // I know it's dirty but I have to sort out order. Target knives arent loaded in proper order
         
-        onLevelEnd += SetGameOngoingInactive;
         KnifeSpawner.onKnifeThrow += SubstractKnife;
         UIController.onMessageDismiss += ContinueAfterLevel;
     }
@@ -64,15 +60,32 @@ public class StatTracker : MonoBehaviour
     
     private void OnDisable()
     {
-        onLevelEnd -= SetGameOngoingInactive;
         KnifeSpawner.onKnifeThrow -= SubstractKnife;
         UIController.onMessageDismiss -= ContinueAfterLevel;
     }
 
+    private static void EndLevel(LevelResult result)
+    {
+        KnifeSpawner.DisableSpawn();
+        gameOngoing = false;
+        KnifeSpawner.DisableSpawn();
+        KnifeSpawner.DisableTrow();
+        onLevelEnd.Invoke(result);
+
+        if(result.lvlResult == LevelResult.Result.win)
+        {
+            levelWon = true;
+        }
+        else 
+        {
+            levelWon = false;
+        }
+  
+    }
+
     public static void ThrowFailed()
     {
-        onLevelEnd.Invoke(new LevelResult{lvlResult = LevelResult.Result.loose});
-        levelWon = false;
+        EndLevel(new LevelResult{lvlResult = LevelResult.Result.loose});
     }
 
     private void GetKnifesCount()
@@ -81,31 +94,15 @@ public class StatTracker : MonoBehaviour
         knifesRemaining = curTarget.knifes;
     }
 
-    void SetGameOngoingActive(LevelResult result)
-    {
-        gameOngoing = true;
-        Debug.Log("Game Ongoing");
-    }
-
-    void SetGameOngoingActive()
-    {
-        gameOngoing = true;
-        Debug.Log("Game Ongoing");
-    }
-
-
-    void SetGameOngoingInactive(LevelResult result) 
-    {
-        gameOngoing = false;
-        Debug.Log("Game Ongoing _NOT");
-    }
-
     void LoadNextLevel()
     {
         RemoveTarget();
         SpawnNewTarget(false);
         GetKnifesCount();
-        SetGameOngoingActive();
+       
+        
+        gameOngoing = true;
+        KnifeSpawner.EnableSpawn();
         //KnifeSpawner.allowThrow = true;
     }
 
@@ -118,8 +115,8 @@ public class StatTracker : MonoBehaviour
 
         SpawnNewTarget(true);
         GetKnifesCount();
-        SetGameOngoingActive();
-        
+        KnifeSpawner.EnableSpawn();  
+        gameOngoing = true;
     }
 
      void RemoveTarget()
@@ -156,7 +153,6 @@ public class StatTracker : MonoBehaviour
             LoadGameFromStart();
         }
     }
-
 
 }
 
