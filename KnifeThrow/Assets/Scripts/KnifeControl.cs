@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class KnifeControl : MonoBehaviour
 {
+    AudioSource audioPlayer;
+    [SerializeField] AudioClip[] hitSound;
+    [SerializeField] AudioClip throwSound;
+    [SerializeField] AudioClip failSound;
 
 
     public float Thrust = 1f;
@@ -25,6 +29,7 @@ public class KnifeControl : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioPlayer = GetComponent<AudioSource>();
     }
 
 
@@ -32,6 +37,7 @@ public class KnifeControl : MonoBehaviour
     void ThrowKnife()
     {
         rb.AddForce(Vector3.up * Thrust);
+        PlaySound(throwSound);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) 
@@ -41,11 +47,26 @@ public class KnifeControl : MonoBehaviour
             atTarget = true;
             rb.bodyType = RigidbodyType2D.Kinematic;
             gameObject.transform.SetParent(collision.gameObject.transform);
+            PlayRandomSound(hitSound);
         }
 
         else
         {
             StatTracker.ThrowFailed();
+            PlaySound(failSound);
         }
     } 
+
+    private void PlaySound(AudioClip clip)
+    {
+        audioPlayer.clip = clip;
+        audioPlayer.Play();
+    }
+
+    private void PlayRandomSound(AudioClip[] clipList)
+    {
+        int i = Random.Range(0, clipList.Length);
+        audioPlayer.clip = clipList[i];
+        audioPlayer.Play();
+    }
 }
