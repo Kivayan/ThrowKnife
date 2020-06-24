@@ -11,18 +11,22 @@ public class StatTracker : MonoBehaviour
     public static bool levelWon;
 
     public Target curTarget;
-    public int curLevelNumber = 1;
+    public int curLevelNumber = 0;
 
     public static event Action<LevelResult> onLevelEnd = details => { };
 
     [SerializeField] Transform spawnPoint;
     [SerializeField] List<GameObject> targetList;
+    [SerializeField] List<GameObject> bossList;
+    [SerializeField] int bossInterval;
 
     void Start()
 
     {
         curTarget = GetComponentInChildren<Target>();
         LoadGameFromStart();
+
+        targetList = CreateLevelOrder(bossInterval);
     }
 
     // Update is called once per frame
@@ -114,8 +118,7 @@ public class StatTracker : MonoBehaviour
         {
             RemoveTarget();
         }
-
-        curLevelNumber = 1;
+;
         SpawnNewTarget(true);
         GetKnifesCount();
         KnifeSpawner.EnableSpawn();
@@ -156,6 +159,37 @@ public class StatTracker : MonoBehaviour
             LoadGameFromStart();
         }
     }
+
+    List<GameObject> CreateLevelOrder(int bossInterval)
+    {
+        List<GameObject> finalLevelList = new List<GameObject>();   
+        int posCounter = 0;
+        int lastTargetTaken = 0;
+        int lastBossTaken = 0 ;
+        int levelListLenght = targetList.Count + (targetList.Count / bossInterval) - 1 ;
+
+        while (posCounter <= levelListLenght)
+        {
+            if(posCounter != 0 && (posCounter - bossInterval + 1 )  % bossInterval == 0)
+            {
+                if(lastBossTaken >= bossList.Count)
+                {
+                    lastBossTaken = 0;
+                }
+                finalLevelList.Add(bossList[lastBossTaken]);
+                lastBossTaken ++;
+                posCounter++;
+            }
+            else 
+            {
+                finalLevelList.Add(targetList[lastTargetTaken]);
+                lastTargetTaken ++;
+                posCounter ++;
+            }
+        }
+        return finalLevelList;
+    }
+
 
 }
 
