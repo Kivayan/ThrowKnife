@@ -913,9 +913,15 @@ MonoBehaviour:
   - {fileID: 6864302140206130391, guid: f1c806d5c34ceae4aa5e07a8a2f9e7d0, type: 3}
   - {fileID: 8277708729600823029, guid: 032b6ceadda3c9243874fc05c89e5212, type: 3}
   - {fileID: 5112824359068140569, guid: 9578d3fd4cdfaf64a90e9a36f8a2dc5b, type: 3}
+  - {fileID: 6864302140206130391, guid: f1c806d5c34ceae4aa5e07a8a2f9e7d0, type: 3}
+  - {fileID: 8277708729600823029, guid: 032b6ceadda3c9243874fc05c89e5212, type: 3}
+  - {fileID: 5112824359068140569, guid: 9578d3fd4cdfaf64a90e9a36f8a2dc5b, type: 3}
+  - {fileID: 6864302140206130391, guid: f1c806d5c34ceae4aa5e07a8a2f9e7d0, type: 3}
+  - {fileID: 8277708729600823029, guid: 032b6ceadda3c9243874fc05c89e5212, type: 3}
   bossList:
   - {fileID: 2129297525719765284, guid: 13e592b582262994984ccefd502144b0, type: 3}
   - {fileID: 2129297525719765284, guid: 2a5b03e1f14f03149854502d1477348c, type: 3}
+  bossInterval: 6
 --- !u!114 &1705241643
 MonoBehaviour:
   m_ObjectHideFlags: 0

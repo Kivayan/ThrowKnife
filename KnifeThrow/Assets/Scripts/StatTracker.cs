@@ -7,13 +7,15 @@ public class StatTracker : MonoBehaviour
 {
     public int knifesTotal;
     public int knifesRemaining;
-    public static bool gameOngoing = true;
+    public static bool gameOngoing = false;
     public static bool levelWon;
 
     public Target curTarget;
     public int curLevelNumber = 0;
 
     public static event Action<LevelResult> onLevelEnd = details => { };
+
+    [SerializeField] UIController UIController;
 
     [SerializeField] Transform spawnPoint;
     [SerializeField] List<GameObject> targetList;
@@ -24,7 +26,7 @@ public class StatTracker : MonoBehaviour
 
     {
         curTarget = GetComponentInChildren<Target>();
-        LoadGameFromStart();
+        ;
 
         targetList = CreateLevelOrder(bossInterval);
     }
@@ -190,6 +192,14 @@ public class StatTracker : MonoBehaviour
         return finalLevelList;
     }
 
+
+    public void StartGame()
+    {
+        UIController.ToogleUI(true);
+        LoadGameFromStart();
+        gameOngoing = true;
+
+    }
 
 }
 

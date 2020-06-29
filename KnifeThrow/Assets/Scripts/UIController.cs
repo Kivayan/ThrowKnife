@@ -12,10 +12,18 @@ public class UIController : MonoBehaviour
     [SerializeField] Text levelText;
     [SerializeField] GameObject winScreen;
     [SerializeField] GameObject looseScreen;
+    [SerializeField] GameObject MenuUI;
     GameObject activeScreen;
 
     public static event Action onMessageDismiss;
 
+
+    public void ToogleUI(bool gameOn)
+    {
+        knifesText.gameObject.SetActive(gameOn);
+        levelText.gameObject.SetActive(gameOn);
+        MenuUI.SetActive(!gameOn);
+    }
 
     void Start()
     {
